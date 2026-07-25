@@ -10,7 +10,7 @@
       ./modules/services.nix
       ./modules/user.nix
       ./modules/packages.nix
-      ./modules/desktop/xfce.nix
+      ./modules/desktop/gnome.nix
       ./modules/dev/python.nix
     ];
 
