@@ -1,3 +1,5 @@
+.PHONY: install update
+
 install:
 	sudo cp configuration.nix /etc/nixos/configuration.nix
 	sudo mkdir -p /etc/nixos/modules/desktop
@@ -9,3 +11,6 @@ install:
 	if [ -f flake.lock ]; then sudo cp flake.lock /etc/nixos/; fi
 	sudo nixos-rebuild switch --flake /etc/nixos/#gwsnix
 	sudo cp /etc/nixos/flake.lock .
+
+update:
+	nix flake update
