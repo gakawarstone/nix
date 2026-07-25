@@ -1,16 +1,25 @@
-.PHONY: install update
+.PHONY: check deploy update
 
-install:
-	sudo cp configuration.nix /etc/nixos/configuration.nix
-	sudo mkdir -p /etc/nixos/modules/desktop
-	sudo mkdir -p /etc/nixos/modules/dev
-	sudo cp modules/*.nix /etc/nixos/modules/
-	sudo cp modules/desktop/*.nix /etc/nixos/modules/desktop/
-	sudo cp modules/dev/*.nix /etc/nixos/modules/dev/
-	sudo cp flake.nix /etc/nixos/
-	if [ -f flake.lock ]; then sudo cp flake.lock /etc/nixos/; fi
-	sudo nixos-rebuild switch --flake /etc/nixos/#gwsnix
-	sudo cp /etc/nixos/flake.lock .
+CONFIGURATION ?= vmnix
+HARDWARE_CONFIG := hosts/$(CONFIGURATION)/hardware-configuration.nix
+
+check:
+	@test -f "$(HARDWARE_CONFIG)" || { \
+		echo "Missing $(HARDWARE_CONFIG)"; \
+		echo "Copy the generated hardware configuration from the NixOS target first."; \
+		exit 1; \
+	}
+	nix flake check --no-build
+
+deploy: check
+	@test -n "$(TARGET_HOST)" || { \
+		echo "Usage: make deploy TARGET_HOST=user@host"; \
+		exit 1; \
+	}
+	nix run .#nixos-rebuild -- switch \
+		--flake ".#$(CONFIGURATION)" \
+		--target-host "$(TARGET_HOST)" \
+		--sudo
 
 update:
 	nix flake update

@@ -3,25 +3,27 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nur.url = "github:nix-community/NUR";
-  };
 
-  outputs = { self, nixpkgs, nur, ... }@inputs: {
-    nixosConfigurations.gwsnix = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        ./configuration.nix
-        {
-          nixpkgs.overlays = [
-            (final: prev: {
-              nur = import nur {
-                nurpkgs = prev;
-                pkgs = prev;
-              };
-            })
-          ];
-        }
-      ];
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
+
+  outputs = { nixpkgs, nur, ... }:
+    let
+      system = "x86_64-linux";
+    in
+    {
+      packages.${system}.nixos-rebuild =
+        nixpkgs.legacyPackages.${system}.nixos-rebuild;
+
+      nixosConfigurations.vmnix = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          nur.modules.nixos.default
+          ./hosts/vmnix
+        ];
+      };
+    };
 }
