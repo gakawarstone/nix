@@ -2,7 +2,8 @@
 
 {
   environment.systemPackages = with pkgs; [
-    python313
+    python314 
     uv
+    opencode
   ];
 }

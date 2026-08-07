@@ -11,5 +11,7 @@
     telegram-desktop
     zed-editor
     gnumake
+    neovim
+    foot
   ];
 }
