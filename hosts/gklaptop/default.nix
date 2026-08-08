@@ -5,6 +5,7 @@
     ./hardware-configuration.nix
     ../../modules/packages.nix
     ../../modules/development.nix
+    ../../modules/pass.nix
     ../../modules/desktop/cosmic.nix
   ];
 
