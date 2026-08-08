@@ -26,11 +26,11 @@
         ];
       };
 
-      nixosConfigurations.vmnix = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
           nur.modules.nixos.default
-          ./hosts/vmnix
+          ./hosts/vm
         ];
       };
     };

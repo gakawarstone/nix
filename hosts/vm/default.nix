@@ -13,7 +13,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "vmnix";
+  networking.hostName = "vm";
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Berlin";
