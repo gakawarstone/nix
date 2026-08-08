@@ -5,5 +5,6 @@
     python314 
     uv
     opencode
+    lazygit
   ];
 }
