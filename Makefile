@@ -1,4 +1,4 @@
-.PHONY: check deploy switch update
+.PHONY: check switch update
 
 CONFIGURATION ?= gklaptop
 HARDWARE_CONFIG := hosts/$(CONFIGURATION)/hardware-configuration.nix
@@ -10,16 +10,6 @@ check:
 		exit 1; \
 	}
 	nix flake check --no-build
-
-deploy:
-	@test -n "$(TARGET_HOST)" || { \
-		echo "Usage: make deploy TARGET_HOST=user@host"; \
-		exit 1; \
-	}
-	nix --extra-experimental-features "nix-command flakes" run .#nixos-rebuild -- switch \
-		--flake ".#$(CONFIGURATION)" \
-		--target-host "$(TARGET_HOST)" \
-		--sudo
 
 switch:
 	sudo nixos-rebuild switch --flake ".#$(CONFIGURATION)"
