@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, pkgsUnstable, ... }:
 
 let
   t3codeVersion = "0.0.32";
@@ -28,8 +28,8 @@ in
     python314
     uv
     opencode
+    pkgsUnstable.codex
     lazygit
-    codex
     t3code
     t3codeDesktop
   ];

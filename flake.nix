@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     nur = {
       url = "github:nix-community/NUR";
@@ -10,7 +11,7 @@
     };
   };
 
-  outputs = { nixpkgs, nur, ... }:
+  outputs = { nixpkgs, nixpkgs-unstable, nur, ... }:
     let
       system = "x86_64-linux";
     in
@@ -20,6 +21,7 @@
 
       nixosConfigurations.gklaptop = nixpkgs.lib.nixosSystem {
         inherit system;
+        specialArgs.pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
         modules = [
           nur.modules.nixos.default
           ./hosts/gklaptop
@@ -28,6 +30,7 @@
 
       nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
         inherit system;
+        specialArgs.pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
         modules = [
           nur.modules.nixos.default
           ./hosts/vm
