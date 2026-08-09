@@ -27,7 +27,7 @@ in
   environment.systemPackages = with pkgs; [
     python314
     uv
-    opencode
+    pkgsUnstable.opencode
     pkgsUnstable.codex
     lazygit
     t3code
