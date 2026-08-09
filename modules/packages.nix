@@ -3,6 +3,13 @@
 {
   nixpkgs.config.allowUnfree = true;
 
+  programs.fish.enable = true;
+
+  environment.variables = {
+    EDITOR = "nvim";
+    VISUAL = "nvim";
+  };
+
   environment.systemPackages = with pkgs; [
     vim
     git

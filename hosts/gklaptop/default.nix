@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -40,6 +40,7 @@
     isNormalUser = true;
     description = "gws";
     extraGroups = [ "networkmanager" "wheel" ];
+    shell = pkgs.fish;
   };
 
   # Keep this at the NixOS release used for the target's first installation.
