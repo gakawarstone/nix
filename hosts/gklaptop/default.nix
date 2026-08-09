@@ -4,6 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/packages.nix
+    ../../modules/fonts.nix
     ../../modules/development.nix
     ../../modules/pass.nix
     ../../modules/desktop/cosmic.nix
