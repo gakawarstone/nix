@@ -25,3 +25,4 @@ switch:
 
 update:
 	nix flake update
+	$(MAKE) switch
