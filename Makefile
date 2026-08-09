@@ -1,4 +1,4 @@
-.PHONY: check switch update
+.PHONY: check clean switch update
 
 CONFIGURATION ?= gklaptop
 HARDWARE_CONFIG := hosts/$(CONFIGURATION)/hardware-configuration.nix
@@ -10,6 +10,10 @@ check:
 		exit 1; \
 	}
 	nix flake check --no-build
+
+clean:
+	sudo nix-collect-garbage --delete-old
+	sudo nix store optimise
 
 switch:
 	sudo nixos-rebuild switch --flake ".#$(CONFIGURATION)"
