@@ -7,7 +7,7 @@
     ../../modules/fonts.nix
     ../../modules/development.nix
     ../../modules/pass.nix
-    ../../modules/desktop/cosmic.nix
+    ../../modules/desktop/hyprland.nix
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];

@@ -1,5 +1,22 @@
 {
   "nodes": {
+    "dotfiles": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1784715433,
+        "narHash": "sha256-trf8drY4+FTs+xVlZJW3ofq/jOZU3HRKeo9Ti2tSMso=",
+        "owner": "gakawarstone",
+        "repo": "dotfiles",
+        "rev": "adf7eea0053c18ef04993db58da767cc86ab7ea0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gakawarstone",
+        "repo": "dotfiles",
+        "rev": "adf7eea0053c18ef04993db58da767cc86ab7ea0",
+        "type": "github"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
@@ -76,6 +93,7 @@
     },
     "root": {
       "inputs": {
+        "dotfiles": "dotfiles",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur"
