@@ -1,4 +1,4 @@
-{ config, dotfiles, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   user = "gws";
@@ -21,26 +21,17 @@ let
       slurp
       wl-clipboard
     ];
-    text = builtins.readFile "${dotfiles}/bins/screen";
+    text = ''
+      exec ${pkgs.bash}/bin/bash "$HOME/dotfiles/bins/screen" "$@"
+    '';
   };
 
   toggleTheme = pkgs.writeShellApplication {
     name = "toggle_theme";
     runtimeInputs = with pkgs; [ coreutils glib procps ];
-    text = builtins.replaceStrings
-      [
-        ''DOTFILES="$HOME/dotfiles"''
-        ''HYPR_DIR="$DOTFILES/configs/hyprland/.config/hypr"''
-        ''FOOT_DIR="$DOTFILES/configs/foot/.config/foot"''
-        ''QUICKSHELL_DIR="$DOTFILES/configs/quickshell/.config/quickshell"''
-      ]
-      [
-        ""
-        ''HYPR_DIR="$HOME/.config/hypr"''
-        ''FOOT_DIR="$HOME/.config/foot"''
-        ''QUICKSHELL_DIR="$HOME/.config/quickshell"''
-      ]
-      (builtins.readFile "${dotfiles}/bins/toggle_theme");
+    text = ''
+      exec ${pkgs.bash}/bin/bash "$HOME/dotfiles/bins/toggle_theme" "$@"
+    '';
   };
 in
 {
@@ -108,52 +99,6 @@ in
       toggleTheme
     ] ++ lib.optionals (lib.hasAttr "legcord" pkgs) [ pkgs.legcord ]
       ++ lib.optionals (lib.hasAttr "thunderbird" pkgs) [ pkgs.thunderbird ];
-  };
-
-  # Keep the upstream files mutable so the adapted theme switcher can replace
-  # their theme symlinks. Rebuilding restores the pinned upstream revision.
-  system.activationScripts.gklaptopHyprlandDotfiles = {
-    deps = [ "users" ];
-    text = ''
-      install -d -m 0755 -o ${user} -g users \
-        ${home}/.config/hypr \
-        ${home}/.config/quickshell \
-        ${home}/.config/wofi \
-        ${home}/.config/foot \
-        ${home}/Images
-
-      copy_config() {
-        source_dir="$1"
-        target_dir="$2"
-        cp -R --remove-destination --no-preserve=mode,ownership \
-          "$source_dir/." "$target_dir/"
-        chown -R ${user}:users "$target_dir"
-        chmod -R u+w "$target_dir"
-      }
-
-      copy_config ${dotfiles}/configs/hyprland/.config/hypr ${home}/.config/hypr
-      copy_config ${dotfiles}/configs/quickshell/.config/quickshell ${home}/.config/quickshell
-      copy_config ${dotfiles}/configs/wofi/.config/wofi ${home}/.config/wofi
-      copy_config ${dotfiles}/configs/foot/.config/foot ${home}/.config/foot
-
-      cp ${home}/.config/foot/foot.j2.ini ${home}/.config/foot/foot.ini
-      ${pkgs.gnused}/bin/sed -i 's/{{font_size}}/11/g' ${home}/.config/foot/foot.ini
-      ln -sfn mocha.ini ${home}/.config/foot/theme.ini
-
-      # The upstream setup is primarily docked. This catch-all keeps the
-      # internal laptop panel and any unlisted output usable as well.
-      ${pkgs.gnused}/bin/sed -i '1ihl.monitor({ output = "", mode = "preferred", position = "auto", scale = "auto" })' \
-        ${home}/.config/hypr/hyprland.lua
-      ${pkgs.gnused}/bin/sed -i 's#/home/gws/dotfiles/wallpapers#${dotfiles}/wallpapers#g' \
-        ${home}/.config/hypr/latte_hyprpaper.conf \
-        ${home}/.config/hypr/mocha_hyprpaper.conf
-
-      chown -hR ${user}:users \
-        ${home}/.config/hypr \
-        ${home}/.config/quickshell \
-        ${home}/.config/wofi \
-        ${home}/.config/foot
-    '';
   };
 
   systemd.tmpfiles.rules = [

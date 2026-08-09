@@ -20,5 +20,7 @@
     gnumake
     neovim
     foot
+    starship
+    zoxide
   ];
 }
