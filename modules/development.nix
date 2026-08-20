@@ -27,14 +27,14 @@ let
     };
   };
 
-  t3codeVersion = "0.0.32";
+  t3codeVersion = "0.0.34-nightly.20260820.1140";
 
   t3code = pkgs.appimageTools.wrapType2 {
     pname = "t3code";
     version = t3codeVersion;
     src = pkgs.fetchurl {
       url = "https://github.com/pingdotgg/t3code/releases/download/v${t3codeVersion}/T3-Code-${t3codeVersion}-x86_64.AppImage";
-      hash = "sha256-SS7ctI7vlzCfNMS3CoEhuGfDronCBowuKLs5Oo2CLCI=";
+      hash = "sha256-kuM2xE+AzGlm0PHDBPOLVsReBth/6/klEcS/ubMvd+A=";
     };
   };
 
