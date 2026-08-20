@@ -1,5 +1,8 @@
 { pkgs, ... }:
 
+let
+  chatgpt-linux = pkgs.callPackage ../packages/chatgpt-linux.nix { };
+in
 {
   nixpkgs.config.allowUnfree = true;
 
@@ -24,5 +27,6 @@
     foot
     starship
     zoxide
+    chatgpt-linux
   ];
 }
