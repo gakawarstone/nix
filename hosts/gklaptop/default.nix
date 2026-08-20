@@ -8,6 +8,7 @@
     ../../modules/fonts.nix
     ../../modules/development.nix
     ../../modules/pass.nix
+    ../../modules/ssh.nix
     ../../modules/desktop/hyprland.nix
   ];
 
