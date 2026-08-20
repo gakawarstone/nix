@@ -19,6 +19,8 @@
     zed-editor
     gnumake
     neovim
+    bat
+    btop
     foot
     starship
     zoxide
