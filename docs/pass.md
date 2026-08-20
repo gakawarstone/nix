@@ -1,6 +1,4 @@
-mkdir -p ~/.gnupg
-echo "pinentry-program /run/current-system/sw/bin/pinentry" >> ~/.gnupg/gpg-agent.conf
-
+# Pinentry is configured system-wide by modules/pass.nix.
 gpgconf --kill gpg-agent
 export GPG_TTY=$(tty)
 gpg --import private.asc
