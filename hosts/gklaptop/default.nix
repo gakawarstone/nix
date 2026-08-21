@@ -3,46 +3,26 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/base.nix
     ../../modules/packages.nix
     ../../modules/dotfiles.nix
     ../../modules/fonts.nix
     ../../modules/development.nix
     ../../modules/pass.nix
-    ../../modules/ssh.nix
     ../../modules/desktop/hyprland.nix
   ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
   networking.hostName = "gklaptop";
-  networking.networkmanager.enable = true;
 
-  time.timeZone = "Europe/Berlin";
+  users.users.gws.shell = pkgs.fish;
 
-  i18n.defaultLocale = "en_US.UTF-8";
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "de_DE.UTF-8";
-    LC_IDENTIFICATION = "de_DE.UTF-8";
-    LC_MEASUREMENT = "de_DE.UTF-8";
-    LC_MONETARY = "de_DE.UTF-8";
-    LC_NAME = "de_DE.UTF-8";
-    LC_NUMERIC = "de_DE.UTF-8";
-    LC_PAPER = "de_DE.UTF-8";
-    LC_TELEPHONE = "de_DE.UTF-8";
-    LC_TIME = "de_DE.UTF-8";
-  };
-
-  services.openssh.enable = true;
-
-  users.users.gws = {
-    isNormalUser = true;
-    description = "gws";
-    extraGroups = [ "networkmanager" "wheel" ];
-    shell = pkgs.fish;
-  };
+  programs.ssh.extraConfig = ''
+    Host oracle
+      HostName 168.138.69.45
+      User ubuntu
+      IdentityFile ~/.ssh/ssh-key-2022-10-24.key
+      IdentitiesOnly yes
+  '';
 
   # Keep this at the NixOS release used for the target's first installation.
   system.stateVersion = "26.05";
