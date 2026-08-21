@@ -2,6 +2,7 @@
 
 let
   chatgpt-linux = pkgs.callPackage ../packages/chatgpt-linux.nix { };
+  helium = pkgs.callPackage ../packages/helium.nix { };
 in
 {
   nixpkgs.config.allowUnfree = true;
@@ -17,7 +18,7 @@ in
     vim
     git
     fastfetch
-    nur.repos.Ev357.helium
+    helium
     telegram-desktop
     zed-editor
     gnumake
