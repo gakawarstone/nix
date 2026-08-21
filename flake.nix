@@ -14,29 +14,24 @@
   outputs = { nixpkgs, nixpkgs-unstable, nur, ... }:
     let
       system = "x86_64-linux";
+      pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+
+      mkHost = hostModule: nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = { inherit pkgsUnstable; };
+        modules = [
+          nur.modules.nixos.default
+          hostModule
+        ];
+      };
     in
     {
       packages.${system}.nixos-rebuild =
         nixpkgs.legacyPackages.${system}.nixos-rebuild;
 
-      nixosConfigurations.gklaptop = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = {
-          pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
-        };
-        modules = [
-          nur.modules.nixos.default
-          ./hosts/gklaptop
-        ];
-      };
-
-      nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs.pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
-        modules = [
-          nur.modules.nixos.default
-          ./hosts/vm
-        ];
+      nixosConfigurations = {
+        gklaptop = mkHost ./hosts/gklaptop;
+        vm = mkHost ./hosts/vm;
       };
     };
 }
