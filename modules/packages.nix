@@ -25,7 +25,6 @@ in
     neovim
     bat
     btop
-    foot
     starship
     zoxide
     chatgpt-linux
