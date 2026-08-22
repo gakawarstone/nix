@@ -1,13 +1,7 @@
 { ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-    ../../modules/base.nix
-    ../../modules/packages.nix
-    ../../modules/development.nix
-    ../../modules/desktop/gnome.nix
-  ];
+  imports = [ ./hardware-configuration.nix ];
 
   networking.hostName = "vm";
 
