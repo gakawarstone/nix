@@ -27,6 +27,7 @@ in
     btop
     starship
     zoxide
+    yazi
     chatgpt-linux
   ];
 }
