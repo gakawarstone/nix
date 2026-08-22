@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, tgsend, ... }:
 
 let
   chatgpt-linux = pkgs.callPackage ../packages/chatgpt-linux.nix { };
@@ -29,5 +29,6 @@ in
     zoxide
     yazi
     chatgpt-linux
+    tgsend
   ];
 }

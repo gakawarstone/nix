@@ -9,7 +9,10 @@
   outputs = { nixpkgs, nixpkgs-unstable, ... }:
     let
       system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
       pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+
+      tgsend = pkgs.callPackage ./packages/tgsend.nix { };
 
       commonModules = [
         ./modules/base.nix
@@ -19,13 +22,15 @@
 
       mkHost = { hostModule, extraModules ? [ ] }: nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = { inherit pkgsUnstable; };
+        specialArgs = { inherit pkgsUnstable tgsend; };
         modules = commonModules ++ [ hostModule ] ++ extraModules;
       };
     in
     {
-      packages.${system}.nixos-rebuild =
-        nixpkgs.legacyPackages.${system}.nixos-rebuild;
+      packages.${system} = {
+        nixos-rebuild = pkgs.nixos-rebuild;
+        inherit tgsend;
+      };
 
       nixosConfigurations = {
         gklaptop = mkHost {
