@@ -7,6 +7,13 @@
 
   users.users.gws.shell = pkgs.fish;
 
+  xdg.mime.defaultApplications = {
+    "application/xhtml+xml" = "helium.desktop";
+    "text/html" = "helium.desktop";
+    "x-scheme-handler/http" = "helium.desktop";
+    "x-scheme-handler/https" = "helium.desktop";
+  };
+
   programs.ssh.extraConfig = ''
     Host oracle
       HostName 168.138.69.45
