@@ -10,7 +10,6 @@
     max-jobs = 2;
     cores = 2;
   };
-  systemd.services.nix-daemon.serviceConfig.CPUQuota = "400%";
 
   users.users.gws.shell = pkgs.fish;
 

@@ -2,6 +2,8 @@
 
 CONFIGURATION ?= gklaptop
 HARDWARE_CONFIG := hosts/$(CONFIGURATION)/hardware-configuration.nix
+BUILD_OPTIONS_gklaptop := --max-jobs 2 --cores 2
+BUILD_OPTIONS := $(BUILD_OPTIONS_$(CONFIGURATION))
 
 check:
 	@test -f "$(HARDWARE_CONFIG)" || { \
@@ -16,7 +18,7 @@ clean:
 	sudo nix store optimise
 
 switch:
-	sudo nixos-rebuild switch --flake ".#$(CONFIGURATION)"
+	sudo nixos-rebuild switch --flake ".#$(CONFIGURATION)" $(BUILD_OPTIONS)
 	@if command -v dotfiles-install >/dev/null; then \
 		dotfiles-install; \
 	else \
