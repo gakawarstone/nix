@@ -5,6 +5,13 @@
 
   networking.hostName = "gklaptop";
 
+  # Keep rebuilds from saturating the laptop's 8 logical CPUs.
+  nix.settings = {
+    max-jobs = 2;
+    cores = 2;
+  };
+  systemd.services.nix-daemon.serviceConfig.CPUQuota = "400%";
+
   users.users.gws.shell = pkgs.fish;
 
   xdg.mime.defaultApplications = {
