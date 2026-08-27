@@ -1,41 +1,22 @@
-{ lib, pkgs, ... }:
+{ dotfiles, ... }:
 
-let
-  dotfilesRepository = "https://github.com/gakawarstone/dotfiles.git";
-
-  dotfilesInstall = pkgs.writeShellApplication {
-    name = "dotfiles-install";
-    runtimeInputs = with pkgs; [
-      coreutils
-      git
-      gnumake
-      python3
-      stow
-      uv
-    ];
-    text = ''
-      dotfiles_dir="$HOME/dotfiles"
-
-      if [ ! -e "$dotfiles_dir" ]; then
-        echo "Cloning dotfiles into $dotfiles_dir"
-        git clone ${lib.escapeShellArg dotfilesRepository} "$dotfiles_dir"
-      elif [ ! -d "$dotfiles_dir/.git" ]; then
-        echo "$dotfiles_dir exists but is not a Git checkout" >&2
-        exit 1
-      else
-        echo "Updating dotfiles in $dotfiles_dir"
-        git -C "$dotfiles_dir" pull --ff-only
-      fi
-
-      if [ ! -f "$dotfiles_dir/Makefile" ]; then
-        echo "$dotfiles_dir does not provide an installer" >&2
-        exit 1
-      fi
-
-      make -C "$dotfiles_dir" install
-    '';
-  };
-in
 {
-  environment.systemPackages = [ dotfilesInstall ];
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+
+    users.gws = {
+      home.stateVersion = "26.05";
+
+      xdg.configFile = {
+        "alacritty".source = "${dotfiles}/configs/alacritty/.config/alacritty";
+        "bat".source = "${dotfiles}/configs/bat/.config/bat";
+        "dunst".source = "${dotfiles}/configs/dunst/.config/dunst";
+        "fish".source = "${dotfiles}/configs/fish/.config/fish";
+        "foot".source = "${dotfiles}/configs/foot/.config/foot";
+        "quickshell".source = "${dotfiles}/configs/quickshell/.config/quickshell";
+        "tmux".source = "${dotfiles}/configs/tmux/.config/tmux";
+      };
+    };
+  };
 }
