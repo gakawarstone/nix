@@ -1,9 +1,5 @@
-{ pkgs, tgsend, ... }:
+{ pkgs, ... }:
 
-let
-  chatgpt-linux = pkgs.callPackage ../packages/chatgpt-linux.nix { };
-  helium = pkgs.callPackage ../packages/helium.nix { };
-in
 {
   nixpkgs.config.allowUnfree = true;
 
@@ -28,6 +24,7 @@ in
     starship
     zoxide
     yazi
+    gkpager
     chatgpt-linux
     tgsend
   ];

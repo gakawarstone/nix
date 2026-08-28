@@ -3,16 +3,12 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, ... }:
+  outputs = { self, nixpkgs, sops-nix, ... }:
     let
-      system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
-      pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
-
-      tgsend = pkgs.callPackage ./packages/tgsend.nix { };
+      defaultSystem = "x86_64-linux";
 
       commonModules = [
         ./modules/base.nix
@@ -20,22 +16,40 @@
         ./modules/development.nix
       ];
 
-      mkHost = { hostModule, extraModules ? [ ] }: nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = { inherit pkgsUnstable tgsend; };
-        modules = commonModules ++ [ hostModule ] ++ extraModules;
+      pkgs = import nixpkgs {
+        system = defaultSystem;
+        overlays = [ self.overlays.default ];
       };
+
+      mkHost =
+        {
+          system ? defaultSystem,
+          modules,
+        }:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            {
+              nixpkgs.hostPlatform = system;
+              nixpkgs.overlays = [ self.overlays.default ];
+            }
+          ] ++ commonModules ++ modules;
+        };
     in
     {
-      packages.${system} = {
+      overlays.default = import ./overlays;
+
+      packages.${defaultSystem} = {
+        inherit (pkgs) gkpager tgsend;
         nixos-rebuild = pkgs.nixos-rebuild;
-        inherit tgsend;
       };
 
       nixosConfigurations = {
         gklaptop = mkHost {
-          hostModule = ./hosts/gklaptop;
-          extraModules = [
+          modules = [
+            ./hosts/gklaptop
+            sops-nix.nixosModules.sops
+            ./modules/wakatime.nix
             ./modules/dotfiles.nix
             ./modules/fonts.nix
             ./modules/pass.nix
@@ -44,8 +58,10 @@
         };
 
         vm = mkHost {
-          hostModule = ./hosts/vm;
-          extraModules = [ ./modules/desktop/gnome.nix ];
+          modules = [
+            ./hosts/vm
+            ./modules/desktop/gnome.nix
+          ];
         };
       };
     };

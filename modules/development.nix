@@ -1,15 +1,11 @@
-{ pkgs, pkgsUnstable, ... }:
+{ pkgs, ... }:
 
-let
-  herdr = pkgs.callPackage ../packages/herdr.nix { };
-  t3code = pkgs.callPackage ../packages/t3code.nix { };
-in
 {
   environment.systemPackages = with pkgs; [
     python314
     uv
-    pkgsUnstable.opencode
-    pkgsUnstable.codex
+    opencode
+    codex-bin
     herdr
     lazygit
     t3code
