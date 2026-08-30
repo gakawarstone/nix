@@ -65,6 +65,18 @@ in
     powerOnBoot = true;
   };
 
+  # powerOnBoot cannot enable a controller whose rfkill state was persisted as
+  # blocked, so clear the software block before BlueZ starts.
+  systemd.services.bluetooth-unblock = {
+    description = "Unblock Bluetooth radio";
+    requiredBy = [ "bluetooth.service" ];
+    before = [ "bluetooth.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.util-linux}/bin/rfkill unblock bluetooth";
+    };
+  };
+
   security.polkit.enable = true;
 
   xdg.portal = {
