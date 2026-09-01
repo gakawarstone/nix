@@ -4,7 +4,6 @@ final: _:
 {
   chatgpt-linux = final.callPackage ../packages/chatgpt-linux.nix { };
   codex-bin = final.callPackage ../packages/codex-bin.nix { };
-  dotfiles-install = final.callPackage ../packages/dotfiles-install.nix { };
   gkpager = final.callPackage ../packages/gkpager.nix { };
   helium = final.callPackage ../packages/helium.nix { };
   helvetica-255 = final.callPackage ../packages/helvetica-255.nix { };

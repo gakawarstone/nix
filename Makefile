@@ -19,11 +19,6 @@ clean:
 
 switch:
 	sudo nixos-rebuild switch --flake ".#$(CONFIGURATION)" $(BUILD_OPTIONS)
-	@if command -v dotfiles-install >/dev/null; then \
-		dotfiles-install; \
-	else \
-		echo "dotfiles-install is not enabled for $(CONFIGURATION); skipping."; \
-	fi
 
 update:
 	nix flake update
