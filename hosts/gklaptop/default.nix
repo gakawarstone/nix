@@ -4,6 +4,9 @@
   imports = [ ./hardware-configuration.nix ];
 
   networking.hostName = "gklaptop";
+  networking.extraHosts = ''
+    192.168.178.22 gkfeed.local
+  '';
 
   # Keep rebuilds from saturating the laptop's 8 logical CPUs.
   nix.settings = {
