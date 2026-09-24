@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
 
     home-manager = {
@@ -11,7 +12,7 @@
     };
   };
 
-  outputs = { self, home-manager, nixpkgs, sops-nix, ... }:
+  outputs = { self, home-manager, nixpkgs, nixpkgs-unstable, sops-nix, ... }:
     let
       defaultSystem = "x86_64-linux";
 
@@ -21,9 +22,17 @@
         ./modules/development.nix
       ];
 
+      pkgsUnstable = import nixpkgs-unstable {
+        system = defaultSystem;
+      };
+
+      codexOverlay = _: _: {
+        codex-bin = pkgsUnstable.callPackage ./packages/codex-bin.nix { };
+      };
+
       pkgs = import nixpkgs {
         system = defaultSystem;
-        overlays = [ self.overlays.default ];
+        overlays = [ self.overlays.default codexOverlay ];
       };
 
       mkHost =
@@ -36,7 +45,7 @@
           modules = [
             {
               nixpkgs.hostPlatform = system;
-              nixpkgs.overlays = [ self.overlays.default ];
+              nixpkgs.overlays = [ self.overlays.default codexOverlay ];
             }
           ] ++ commonModules ++ modules;
         };
