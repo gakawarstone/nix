@@ -8,6 +8,7 @@ final: _:
   helium = final.callPackage ../packages/helium.nix { };
   helvetica-255 = final.callPackage ../packages/helvetica-255.nix { };
   herdr = final.callPackage ../packages/herdr.nix { };
+  klartext = final.callPackage ../packages/klartext.nix { };
   t3code = final.callPackage ../packages/t3code.nix { };
   tgsend = final.callPackage ../packages/tgsend.nix { };
 }

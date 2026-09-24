@@ -25,6 +25,7 @@
     zoxide
     yazi
     gkpager
+    klartext
     chatgpt-linux
     tgsend
   ];
