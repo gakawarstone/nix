@@ -33,6 +33,18 @@ let
       exec ${pkgs.bash}/bin/bash "$HOME/dotfiles/bins/toggle_theme" "$@"
     '';
   };
+
+  quickshellWithEffects = pkgs.symlinkJoin {
+    name = "quickshell-with-effects";
+    paths = [ pkgs.quickshell ];
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram "$out/bin/quickshell" \
+        --prefix QML_IMPORT_PATH : "${pkgs.qt6.qt5compat}/lib/qt-6/qml"
+      wrapProgram "$out/bin/qs" \
+        --prefix QML_IMPORT_PATH : "${pkgs.qt6.qt5compat}/lib/qt-6/qml"
+    '';
+  };
 in
 {
   programs.hyprland = {
@@ -101,7 +113,7 @@ in
       libnotify
       networkmanagerapplet
       playerctl
-      quickshell
+      quickshellWithEffects
       screen
       slurp
       swaylock
