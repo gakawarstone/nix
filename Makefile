@@ -18,7 +18,7 @@ clean:
 	sudo nix store optimise
 
 switch:
-	sudo nixos-rebuild switch --flake ".#$(CONFIGURATION)" $(BUILD_OPTIONS)
+	sudo nixos-rebuild switch --install-bootloader --flake ".#$(CONFIGURATION)" $(BUILD_OPTIONS)
 
 update:
 	nix flake update
