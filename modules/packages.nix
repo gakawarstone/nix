@@ -18,7 +18,6 @@
     telegram-desktop
     zed-editor
     gnumake
-    neovim
     bat
     btop
     starship

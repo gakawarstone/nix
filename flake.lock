@@ -69,11 +69,32 @@
         "type": "github"
       }
     },
+    "nvim": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790268131,
+        "narHash": "sha256-FgUZqZ0txM63cpFDENuOOyBeS8laZFMPJcWd0KMNIv0=",
+        "owner": "gakawarstone",
+        "repo": "nvim",
+        "rev": "6cc0d7d0888ab469b0d5fd6f1028b74faf586bbd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gakawarstone",
+        "repo": "nvim",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "nvim": "nvim",
         "sops-nix": "sops-nix"
       }
     },

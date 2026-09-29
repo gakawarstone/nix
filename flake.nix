@@ -5,6 +5,10 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
+    nvim = {
+      url = "github:gakawarstone/nvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
@@ -12,7 +16,7 @@
     };
   };
 
-  outputs = { self, home-manager, nixpkgs, nixpkgs-unstable, sops-nix, ... }:
+  outputs = { self, home-manager, nixpkgs, nixpkgs-unstable, nvim, sops-nix, ... }:
     let
       defaultSystem = "x86_64-linux";
 
@@ -64,6 +68,7 @@
             ./hosts/gklaptop
             sops-nix.nixosModules.sops
             home-manager.nixosModules.home-manager
+            { home-manager.sharedModules = [ nvim.homeManagerModules.default ]; }
             ./modules/wakatime.nix
             ./modules/dotfiles.nix
             ./modules/fonts.nix
