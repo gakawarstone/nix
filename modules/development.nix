@@ -4,6 +4,9 @@
   environment.systemPackages = with pkgs; [
     python314
     uv
+    elmPackages.elm
+    elmPackages.elm-format
+    elmPackages.elm-language-server
     opencode
     codex-bin
     herdr
