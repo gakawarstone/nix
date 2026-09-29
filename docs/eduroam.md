@@ -16,7 +16,8 @@ python3 scripts/eduroam.py save
 
 Enter the full eduroam identity, normally `name@hs-flensburg.de`, and the
 password when prompted. The script writes them to the SOPS-encrypted profile,
-then asks for sudo to reload the live NetworkManager profile. The password is
+then asks for sudo to install the CA certificate and reload the live
+NetworkManager profile. The password is
 not passed as a command-line argument or stored in shell history. If the sudo
 step fails, the encrypted change remains saved; retry deployment with:
 
@@ -26,7 +27,9 @@ python3 scripts/eduroam.py deploy
 
 The encrypted profile is tracked by Git. Commit it if the credentials should
 survive a fresh checkout or NixOS rebuild. The decrypted profile is installed
-with mode `0600` and contains the saved password.
+with mode `0600` and contains the saved password. The CA certificate is public
+and installed with mode `0644` in a traversable directory so NetworkManager
+can read it for the user-owned profile.
 
 ## Connect and diagnose in range
 

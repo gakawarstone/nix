@@ -16,8 +16,11 @@ from datetime import datetime
 
 ROOT = Path(__file__).resolve().parent.parent
 SECRET = ROOT / "secrets/eduroam.nmconnection.cfg"
+CERT_SECRET = ROOT / "secrets/eduroam-ca-cert.cfg"
 UUID = "4010325c-14b4-47eb-af63-9518522eaa62"
 PROFILE = f"/etc/NetworkManager/system-connections/eduroam-{UUID}.nmconnection"
+CERT_DIR = f"/etc/NetworkManager/eduroam-material/{UUID}"
+CERT = f"{CERT_DIR}/ca-cert"
 
 
 class SetupError(Exception):
@@ -44,6 +47,12 @@ def run_sops(*args, data=None):
 def decrypted_profile():
     return run_sops(
         "decrypt", "--input-type", "json", "--output-type", "binary", str(SECRET)
+    )
+
+
+def decrypted_certificate():
+    return run_sops(
+        "decrypt", "--input-type", "json", "--output-type", "binary", str(CERT_SECRET)
     )
 
 
@@ -103,8 +112,19 @@ def write_encrypted(data):
 
 
 def deploy(data):
+    certificate = decrypted_certificate()
     if subprocess.run(["sudo", "-v"]).returncode:
         raise SetupError("sudo authentication failed; encrypted credentials were saved in ~/nix.")
+    cert_command = (
+        "set -eu; umask 077; "
+        f"install -d -m 0755 {CERT_DIR}; "
+        f"temporary=$(mktemp {CERT_DIR}/.ca-cert.XXXXXXXX); "
+        "trap 'rm -f \"$temporary\"' EXIT; "
+        "cat > \"$temporary\"; chmod 0644 \"$temporary\"; "
+        f"mv -f \"$temporary\" {CERT}"
+    )
+    if subprocess.run(["sudo", "-n", "sh", "-c", cert_command], input=certificate).returncode:
+        raise SetupError("Could not deploy the CA certificate. Encrypted credentials remain saved in ~/nix.")
     # The plaintext travels only through stdin and a root-owned 0600 temporary file.
     command = (
         "set -eu; umask 077; "

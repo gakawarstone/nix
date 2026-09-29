@@ -31,8 +31,8 @@ in
       RemainAfterExit = true;
     };
     script = ''
-      install -d -m 0700 ${certificateDir}
-      install -m 0600 ${config.sops.secrets."eduroam-ca-cert".path} ${certificateDir}/ca-cert
+      install -d -m 0755 ${certificateDir}
+      install -m 0644 ${config.sops.secrets."eduroam-ca-cert".path} ${certificateDir}/ca-cert
 
       temporary=$(mktemp /etc/NetworkManager/system-connections/.eduroam.XXXXXXXX)
       trap 'rm -f "$temporary"' EXIT
