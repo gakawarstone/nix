@@ -30,13 +30,14 @@
         system = defaultSystem;
       };
 
-      codexOverlay = _: _: {
+      unstableToolsOverlay = _: _: {
         codex-bin = pkgsUnstable.callPackage ./packages/codex-bin.nix { };
+        opencode = pkgsUnstable.opencode;
       };
 
       pkgs = import nixpkgs {
         system = defaultSystem;
-        overlays = [ self.overlays.default codexOverlay ];
+        overlays = [ self.overlays.default unstableToolsOverlay ];
       };
 
       mkHost =
@@ -49,7 +50,7 @@
           modules = [
             {
               nixpkgs.hostPlatform = system;
-              nixpkgs.overlays = [ self.overlays.default codexOverlay ];
+              nixpkgs.overlays = [ self.overlays.default unstableToolsOverlay ];
             }
           ] ++ commonModules ++ modules;
         };
