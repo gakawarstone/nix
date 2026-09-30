@@ -8,6 +8,7 @@
     elmPackages.elm
     elmPackages.elm-format
     elmPackages.elm-language-server
+    jetbrains.idea
     opencode
     codex-bin
     herdr
