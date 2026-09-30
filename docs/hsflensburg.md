@@ -1,7 +1,9 @@
 # HS Flensburg on gklaptop
 
-`modules/hsflensburg.nix` groups the Git identities, GitLab HTTPS credential,
-and eduroam configuration. The identities, GitLab token, and eduroam profile
+`home/gws/secrets.nix` installs the Git identities and GitLab HTTPS credential.
+`home/gws/git.nix` configures the credential helper through Home Manager. The
+laptop separately imports `modules/services/eduroam.nix` for Wi-Fi. The identities,
+GitLab token, and eduroam profile
 come from encrypted files in `secrets/` during NixOS activation. No interactive
 GitLab setup step is needed.
 

@@ -1,5 +1,5 @@
 {
-  description = "NixOS configuration with Flakes";
+  description = "Personal NixOS hosts and packages";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
@@ -9,81 +9,75 @@
       url = "github:gakawarstone/nvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, home-manager, nixpkgs, nixpkgs-unstable, nvim, sops-nix, ... }:
+  outputs =
+    inputs@{ self, nixpkgs, ... }:
     let
-      defaultSystem = "x86_64-linux";
-
-      commonModules = [
-        ./modules/base.nix
-        ./modules/packages.nix
-        ./modules/development.nix
-      ];
-
-      pkgsUnstable = import nixpkgs-unstable {
-        system = defaultSystem;
-      };
-
-      unstableToolsOverlay = _: _: {
-        codex-bin = pkgsUnstable.callPackage ./packages/codex-bin.nix { };
-        opencode = pkgsUnstable.opencode;
-      };
-
+      system = "x86_64-linux";
       pkgs = import nixpkgs {
-        system = defaultSystem;
-        overlays = [ self.overlays.default unstableToolsOverlay ];
+        inherit system;
+        config.allowUnfree = true;
+        overlays = [ self.overlays.default ];
       };
-
+      localPackages = {
+        inherit (pkgs)
+          chatgpt-linux
+          codex-bin
+          gkpager
+          helium
+          helvetica-255
+          herdr
+          klartext
+          t3code
+          tgsend
+          ;
+      };
       mkHost =
-        {
-          system ? defaultSystem,
-          modules,
-        }:
+        host:
         nixpkgs.lib.nixosSystem {
           inherit system;
+          specialArgs = { inherit inputs; };
           modules = [
             {
               nixpkgs.hostPlatform = system;
-              nixpkgs.overlays = [ self.overlays.default unstableToolsOverlay ];
+              nixpkgs.overlays = [ self.overlays.default ];
             }
-          ] ++ commonModules ++ modules;
+            (./hosts + "/${host}")
+          ];
         };
     in
     {
-      overlays.default = import ./overlays;
-
-      packages.${defaultSystem} = {
-        inherit (pkgs) gkpager tgsend;
-        nixos-rebuild = pkgs.nixos-rebuild;
+      overlays.default = import ./overlays { inherit inputs; };
+      packages.${system} = localPackages // {
+        inherit (pkgs) nixos-rebuild;
       };
-
+      formatter.${system} = pkgs.nixfmt-tree;
+      devShells.${system}.default = pkgs.mkShellNoCC {
+        packages = with pkgs; [
+          nixfmt
+          nixfmt-tree
+          ripgrep
+          gnumake
+          sops
+          age
+          ssh-to-age
+          python314
+        ];
+      };
+      checks.${system} = import ./checks {
+        inherit pkgs;
+        source = self;
+        packages = localPackages;
+        hosts = self.nixosConfigurations;
+      };
       nixosConfigurations = {
-        gklaptop = mkHost {
-          modules = [
-            ./hosts/gklaptop
-            sops-nix.nixosModules.sops
-            home-manager.nixosModules.home-manager
-            { home-manager.sharedModules = [ nvim.homeManagerModules.default ]; }
-            ./modules/wakatime.nix
-            ./modules/dotfiles.nix
-            ./modules/fonts.nix
-            ./modules/pass.nix
-            ./modules/desktop/hyprland.nix
-          ];
-        };
-
-        vm = mkHost {
-          modules = [
-            ./hosts/vm
-            ./modules/desktop/gnome.nix
-          ];
-        };
+        gklaptop = mkHost "gklaptop";
+        vm = mkHost "vm";
       };
     };
 }

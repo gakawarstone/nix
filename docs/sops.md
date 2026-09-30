@@ -9,10 +9,12 @@ in the Nix store is world-readable.
 - `~/.config/sops/age/keys.txt` — personal age key, used for editing. Never commit.
 - `.sops.yaml` — maps pubkeys to files under `secrets/`.
 - `secrets/wakatime.cfg` — encrypted WakaTime configuration.
-- `modules/wakatime.nix` — decrypts it to `/home/gws/.wakatime.cfg`.
+- `home/gws/secrets.nix` — declares personal secrets and their destinations, including WakaTime and tgsend.
 - `secrets/gitlab-hs-flensburg.json` — encrypted HS Flensburg GitLab credential.
 - `secrets/git-default-identity.cfg` and `secrets/hsflensburg-identity.cfg` — encrypted Git identities.
-- `modules/hsflensburg.nix` — installs the identities, GitLab credential, and eduroam profile.
+- `home/gws/git.nix` — configures the GitLab credential helper.
+- `modules/services/eduroam.nix` — installs the eduroam profile and CA certificate.
+- `modules/system/secrets.nix` — imports the sops-nix NixOS module.
 
 ## Usage
 
@@ -24,7 +26,7 @@ Edit or add secrets (opens decrypted in $EDITOR, re-encrypts on save):
 Reference a secret in a module:
 
     sops.secrets.wakatime = {
-      sopsFile = ../secrets/wakatime.cfg;
+      sopsFile = ../../secrets/wakatime.cfg;
       format = "binary";
       path = "/home/gws/.wakatime.cfg";
       owner = "gws";

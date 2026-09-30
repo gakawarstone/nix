@@ -10,7 +10,8 @@
   installShellCompletions ? stdenv.buildPlatform.canExecute stdenv.hostPlatform,
 }:
 
-assert stdenv.hostPlatform.system == "x86_64-linux"
+assert
+  stdenv.hostPlatform.system == "x86_64-linux"
   || throw "codex-bin currently supports only x86_64-linux";
 
 stdenv.mkDerivation (finalAttrs: {
@@ -29,7 +30,12 @@ stdenv.mkDerivation (finalAttrs: {
   dontStrip = true;
   doCheck = false;
 
-  nativeBuildInputs = [ gnutar gzip makeWrapper ] ++ lib.optionals installShellCompletions [ installShellFiles ];
+  nativeBuildInputs = [
+    gnutar
+    gzip
+    makeWrapper
+  ]
+  ++ lib.optionals installShellCompletions [ installShellFiles ];
 
   buildPhase = ''
     runHook preBuild

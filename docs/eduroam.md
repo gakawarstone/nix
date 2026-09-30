@@ -1,6 +1,6 @@
 # eduroam on gklaptop
 
-The HS Flensburg module imports `modules/eduroam.nix` and installs the encrypted NetworkManager
+The laptop imports `modules/services/eduroam.nix` and installs the encrypted NetworkManager
 profile from `secrets/eduroam.nmconnection.cfg`. The CA certificate is also
 encrypted under `secrets/`. NixOS decrypts them at activation; the helper
 decrypts the profile in memory when saving or deploying credentials.

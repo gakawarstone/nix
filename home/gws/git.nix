@@ -1,5 +1,4 @@
-{ config, pkgs, ... }:
-
+{ osConfig, pkgs, ... }:
 let
   host = "gitlab.hs-flensburg.de";
   credentialHelper = pkgs.writeShellScript "hsflensburg-git-credential" ''
@@ -19,39 +18,11 @@ let
       select((.username | type == "string" and length > 0 and (contains("\n") | not) and (contains("\r") | not)) and
              (.token | type == "string" and length > 0 and (contains("\n") | not) and (contains("\r") | not))) |
       "username=\(.username)\npassword=\(.token)"
-    ' ${config.sops.secrets.hsflensburg-gitlab.path}
+    ' ${osConfig.sops.secrets.hsflensburg-gitlab.path}
   '';
 in
 {
-  imports = [ ./eduroam.nix ];
-
-  sops.secrets.hsflensburg-gitlab = {
-    sopsFile = ../secrets/gitlab-hs-flensburg.json;
-    format = "json";
-    key = "";
-    owner = "gws";
-    group = "users";
-    mode = "0600";
-  };
-
-  sops.secrets.git-default-identity = {
-    sopsFile = ../secrets/git-default-identity.cfg;
-    format = "binary";
-    path = "/home/gws/.gitconfig";
-    owner = "gws";
-    group = "users";
-    mode = "0600";
-  };
-
-  sops.secrets.hsflensburg-identity = {
-    sopsFile = ../secrets/hsflensburg-identity.cfg;
-    format = "binary";
-    owner = "gws";
-    group = "users";
-    mode = "0600";
-  };
-
-  home-manager.users.gws.xdg.configFile."git/config".text = ''
+  xdg.configFile."git/config".text = ''
     [credential "https://${host}"]
         helper =
         helper = ${credentialHelper}

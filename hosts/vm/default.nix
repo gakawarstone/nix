@@ -1,7 +1,23 @@
 { ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    ../../profiles/minimal.nix
+    ../../modules/desktop/gnome.nix
+  ];
+
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  users.users.gws = {
+    isNormalUser = true;
+    description = "gws";
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
+  };
 
   networking.hostName = "vm";
 

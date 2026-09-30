@@ -1,10 +1,12 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
   imports = [
-    ./hardware-configuration.nix
-    ../../modules/hsflensburg.nix
-    ../../modules/tgsend.nix
+    ./hardware.nix
+    ../../profiles/workstation.nix
+    ../../home/gws/nixos.nix
+    ../../modules/services/eduroam.nix
+    ../../modules/desktop/hyprland.nix
   ];
 
   networking.hostName = "gklaptop";
@@ -17,23 +19,6 @@
     max-jobs = 2;
     cores = 2;
   };
-
-  users.users.gws.shell = pkgs.fish;
-
-  xdg.mime.defaultApplications = {
-    "application/xhtml+xml" = "helium.desktop";
-    "text/html" = "helium.desktop";
-    "x-scheme-handler/http" = "helium.desktop";
-    "x-scheme-handler/https" = "helium.desktop";
-  };
-
-  programs.ssh.extraConfig = ''
-    Host oracle
-      HostName 168.138.69.45
-      User ubuntu
-      IdentityFile ~/.ssh/ssh-key-2022-10-24.key
-      IdentitiesOnly yes
-  '';
 
   # Keep this at the NixOS release used for the target's first installation.
   system.stateVersion = "26.05";

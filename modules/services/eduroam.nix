@@ -6,15 +6,17 @@ let
   certificateDir = "/etc/NetworkManager/eduroam-material/${connectionId}";
 in
 {
+  imports = [ ../system/secrets.nix ];
+
   sops.secrets."eduroam-profile" = {
-    sopsFile = ../secrets/eduroam.nmconnection.cfg;
+    sopsFile = ../../secrets/eduroam.nmconnection.cfg;
     format = "binary";
     mode = "0600";
     restartUnits = [ "eduroam-profile.service" ];
   };
 
   sops.secrets."eduroam-ca-cert" = {
-    sopsFile = ../secrets/eduroam-ca-cert.cfg;
+    sopsFile = ../../secrets/eduroam-ca-cert.cfg;
     format = "binary";
     mode = "0600";
     restartUnits = [ "eduroam-profile.service" ];
@@ -25,7 +27,10 @@ in
     wantedBy = [ "multi-user.target" ];
     requires = [ "NetworkManager.service" ];
     after = [ "NetworkManager.service" ];
-    path = [ pkgs.coreutils pkgs.networkmanager ];
+    path = [
+      pkgs.coreutils
+      pkgs.networkmanager
+    ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;

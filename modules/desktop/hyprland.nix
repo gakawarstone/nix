@@ -1,39 +1,6 @@
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 
 let
-  user = "gws";
-  home = "/home/${user}";
-
-  lock = pkgs.writeShellApplication {
-    name = "lock";
-    runtimeInputs = [ pkgs.swaylock ];
-    text = ''
-      swaylock --daemonize --color 1e1e2e
-    '';
-  };
-
-  screen = pkgs.writeShellApplication {
-    name = "screen";
-    runtimeInputs = with pkgs; [
-      coreutils
-      gawk
-      grim
-      slurp
-      wl-clipboard
-    ];
-    text = ''
-      exec ${pkgs.bash}/bin/bash "$HOME/dotfiles/bins/screen" "$@"
-    '';
-  };
-
-  toggleTheme = pkgs.writeShellApplication {
-    name = "toggle_theme";
-    runtimeInputs = with pkgs; [ coreutils glib procps ];
-    text = ''
-      exec ${pkgs.bash}/bin/bash "$HOME/dotfiles/bins/toggle_theme" "$@"
-    '';
-  };
-
   quickshellWithEffects = pkgs.symlinkJoin {
     name = "quickshell-with-effects";
     paths = [ pkgs.quickshell ];
@@ -61,32 +28,7 @@ in
       };
     };
 
-    blueman.enable = true;
     gnome.gnome-keyring.enable = true;
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      pulse.enable = true;
-    };
-    power-profiles-daemon.enable = true;
-    upower.enable = true;
-  };
-
-  hardware.bluetooth = {
-    enable = true;
-    powerOnBoot = true;
-  };
-
-  # powerOnBoot cannot enable a controller whose rfkill state was persisted as
-  # blocked, so clear the software block before BlueZ starts.
-  systemd.services.bluetooth-unblock = {
-    description = "Unblock Bluetooth radio";
-    requiredBy = [ "bluetooth.service" ];
-    before = [ "bluetooth.service" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.util-linux}/bin/rfkill unblock bluetooth";
-    };
   };
 
   security.polkit.enable = true;
@@ -114,19 +56,10 @@ in
       networkmanagerapplet
       playerctl
       quickshellWithEffects
-      screen
       slurp
       swaylock
       wl-clipboard
       wofi
-      lock
-      toggleTheme
-    ] ++ lib.optionals (lib.hasAttr "legcord" pkgs) [ pkgs.legcord ]
-      ++ lib.optionals (lib.hasAttr "thunderbird" pkgs) [ pkgs.thunderbird ];
+    ];
   };
-
-  systemd.tmpfiles.rules = [
-    "d ${home}/.config 0755 ${user} users -"
-    "d ${home}/Images 0755 ${user} users -"
-  ];
 }
