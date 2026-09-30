@@ -13,6 +13,8 @@ in the Nix store is world-readable.
 - `secrets/gitlab-hs-flensburg.json` — encrypted HS Flensburg GitLab credential.
 - `secrets/git-default-identity.cfg` and `secrets/hsflensburg-identity.cfg` — encrypted Git identities.
 - `home/gws/git.nix` — configures the GitLab credential helper.
+- `secrets/ssh-oracle.cfg` — encrypted Oracle SSH connection details.
+- `home/gws/ssh.nix` — includes the decrypted SSH configuration from `/run/secrets/ssh-oracle`.
 - `modules/services/eduroam.nix` — installs the eduroam profile and CA certificate.
 - `modules/system/secrets.nix` — imports the sops-nix NixOS module.
 

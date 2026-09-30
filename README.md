@@ -109,4 +109,4 @@ in `overlays/default.nix`. Other local packages use stable nixpkgs.
 
 Feature guides: [dotfiles](docs/dotfiles.md), [SOPS](docs/sops.md),
 [HS Flensburg Git](docs/hsflensburg.md), [eduroam](docs/eduroam.md),
-and [password store](docs/pass.md).
+[SSH](docs/ssh.md), and [password store](docs/pass.md).

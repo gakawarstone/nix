@@ -13,6 +13,7 @@ in
   imports = [ ../../modules/system/secrets.nix ];
 
   sops.secrets = {
+    ssh-oracle = userSecret "ssh-oracle.cfg";
     wakatime = userSecret "wakatime.cfg" // {
       path = "${home}/.wakatime.cfg";
     };
