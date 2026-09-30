@@ -10,6 +10,9 @@ in the Nix store is world-readable.
 - `.sops.yaml` — maps pubkeys to files under `secrets/`.
 - `secrets/wakatime.cfg` — encrypted WakaTime configuration.
 - `modules/wakatime.nix` — decrypts it to `/home/gws/.wakatime.cfg`.
+- `secrets/gitlab-hs-flensburg.json` — encrypted HS Flensburg GitLab credential.
+- `secrets/git-default-identity.cfg` and `secrets/hsflensburg-identity.cfg` — encrypted Git identities.
+- `modules/hsflensburg.nix` — installs the identities, GitLab credential, and eduroam profile.
 
 ## Usage
 

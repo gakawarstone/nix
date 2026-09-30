@@ -3,7 +3,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../modules/eduroam.nix
+    ../../modules/hsflensburg.nix
   ];
 
   networking.hostName = "gklaptop";
