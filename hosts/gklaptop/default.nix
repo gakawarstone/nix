@@ -4,6 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/hsflensburg.nix
+    ../../modules/tgsend.nix
   ];
 
   networking.hostName = "gklaptop";
