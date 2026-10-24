@@ -1,14 +1,28 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
+  # The mutable dotfiles VPN helper runs these commands from Quickshell/Foot.
+  vpnPath = lib.makeBinPath [
+    pkgs.networkmanager
+    pkgs.openconnect
+    pkgs.python3
+    pkgs.foot
+  ];
   quickshellWithEffects = pkgs.symlinkJoin {
     name = "quickshell-with-effects";
     paths = [ pkgs.quickshell ];
     nativeBuildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram "$out/bin/quickshell" \
+        --prefix PATH : "${vpnPath}" \
         --prefix QML_IMPORT_PATH : "${pkgs.qt6.qt5compat}/lib/qt-6/qml"
       wrapProgram "$out/bin/qs" \
+        --prefix PATH : "${vpnPath}" \
         --prefix QML_IMPORT_PATH : "${pkgs.qt6.qt5compat}/lib/qt-6/qml"
     '';
   };
