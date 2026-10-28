@@ -33,16 +33,17 @@
   nss,
   pango,
   systemdLibs,
+  tpm2-tss,
   xdg-utils,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "chatgpt-linux";
-  version = "26.818.21641";
+  version = "26.1023.51421";
 
   src = fetchurl {
     url = "https://persistent.oaistatic.com/codex-app-prod/linux/deb/pool/main/c/chatgpt/chatgpt_${finalAttrs.version}_amd64.deb";
-    hash = "sha256-4Ti46ACPK5AHHhsZ+c7xElxe13EOaP2ch+ZlUoXWj2o=";
+    hash = "sha256-RITcK1T8CXi+sjuNjXF0lOTgtPvqsKh2c5EF5QtE3lo=";
   };
 
   nativeBuildInputs = [
@@ -80,6 +81,7 @@ stdenv.mkDerivation (finalAttrs: {
     nss
     pango
     systemdLibs
+    tpm2-tss
   ];
 
   runtimeDependencies = [ systemdLibs ];
