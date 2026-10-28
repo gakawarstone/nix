@@ -14,6 +14,9 @@
     192.168.178.22 gkfeed.local
   '';
 
+  virtualisation.docker.enable = true;
+  users.users.gws.extraGroups = [ "docker" ];
+
   # Keep rebuilds from saturating the laptop's 8 logical CPUs.
   nix.settings = {
     max-jobs = 2;
