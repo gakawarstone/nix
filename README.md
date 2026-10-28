@@ -107,6 +107,48 @@ nix build .#codex-bin
 nixpkgs; `opencode` comes directly from unstable. These choices are defined once
 in `overlays/default.nix`. Other local packages use stable nixpkgs.
 
+## Java development
+
+The laptop provides Java 25 as the default (`java`, `javac`, and `JAVA_HOME`),
+with Java 24 available alongside it. Stable SDK paths for IntelliJ and Gradle are
+`~/.jdks/java-24` and `~/.jdks/java-25`; `JAVA_24_HOME` and `JAVA_25_HOME` also point
+to the corresponding JDKs. After applying the configuration, log in again to
+refresh the session variables.
+
+Use Java 24 for a project in its terminal:
+
+```sh
+export JAVA_HOME="$JAVA_24_HOME"
+export PATH="$JAVA_HOME/bin:$PATH"
+./gradlew build
+```
+
+For a Kotlin JVM project, select its compiler and test toolchain in
+`build.gradle.kts`:
+
+```kotlin
+kotlin {
+    jvmToolchain(24)
+}
+```
+
+If Gradle does not discover the SDK directories, add this to the project's
+`gradle.properties`:
+
+```properties
+org.gradle.java.installations.fromEnv=JAVA_24_HOME,JAVA_25_HOME
+```
+
+In IntelliJ, add `~/.jdks/java-24` as an SDK and select it as both the project's
+SDK and Gradle JVM. Gradle requires 8.14 or newer to run on Java 24, and 9.1.0 or
+newer to run on Java 25; use the project's Gradle wrapper.
+See the [Gradle compatibility matrix](https://docs.gradle.org/current/userguide/compatibility.html)
+and [Kotlin toolchain documentation](https://kotlinlang.org/docs/gradle-configure-project.html#gradle-java-toolchains-support).
+
+Java 24 comes from the separately locked `nixpkgs-java24` input (NixOS 25.05),
+because current Nixpkgs removed it after end of life. That input supplies only
+the Java 24 SDK; the rest of the system stays on the main package inputs.
+
 Feature guides: [dotfiles](docs/dotfiles.md), [SOPS](docs/sops.md),
 [HS Flensburg Git](docs/hsflensburg.md), [eduroam](docs/eduroam.md),
 [SSH](docs/ssh.md), and [password store](docs/pass.md).
