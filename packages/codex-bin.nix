@@ -17,11 +17,11 @@ assert
 stdenv.mkDerivation (finalAttrs: {
   # Use the upstream release package until nixpkgs catches up.
   pname = "codex";
-  version = "0.159.2";
+  version = "0.164.0";
 
   src = fetchurl {
     url = "https://github.com/openai/codex/releases/download/rust-v${finalAttrs.version}/codex-package-x86_64-unknown-linux-musl.tar.gz";
-    hash = "sha256-ni0ppxO5RHiyQN7C8Q4RMkzQX6123EPnxjm9+KEzems=";
+    hash = "sha256-PsVQUxCWCNUDj35QdQ99Jfdo39dA/vBxqnEOJVm2Oqw=";
   };
 
   dontUnpack = true;
