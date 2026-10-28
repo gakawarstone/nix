@@ -84,7 +84,7 @@ account password; provision that separately on a fresh installation.
 | `make fmt` | Format Nix files |
 | `make fmt-check` | Check formatting without changing files |
 | `make check` | Check formatting and fully evaluate both host derivations and flake outputs |
-| `make check-build` | Build the formatting, host evaluation, and ten local package checks |
+| `make check-build` | Build the formatting, host evaluation, and local package checks |
 | `make update` | Update `flake.lock` without activating the system |
 | `make build CONFIGURATION=<host>` | Build a host without activating it; creates `result` |
 | `make test CONFIGURATION=<host>` | Activate a host for the running system |
@@ -154,4 +154,5 @@ the Java 24 SDK; the rest of the system stays on the main package inputs.
 
 Feature guides: [dotfiles](docs/dotfiles.md), [SOPS](docs/sops.md),
 [HS Flensburg Git](docs/hsflensburg.md), [eduroam](docs/eduroam.md),
-[SSH](docs/ssh.md), and [password store](docs/pass.md).
+[SSH](docs/ssh.md), [password store](docs/pass.md), and
+[Energy Meter](docs/energy-meter.md).

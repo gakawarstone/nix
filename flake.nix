@@ -36,6 +36,7 @@
           herdr
           klartext
           kotlin-lsp
+          omaenergy
           t3code
           tgsend
           ;
