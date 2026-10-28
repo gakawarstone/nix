@@ -36,6 +36,7 @@
           herdr
           klartext
           kotlin-lsp
+          stud-gk
           t3code
           tgsend
           ;

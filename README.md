@@ -62,6 +62,9 @@ nix develop
 4. Stage newly added or moved project files before using Git-backed flake commands:
    `git add <paths>`. The flake only includes files known to Git. Stage encrypted
    secret files, never plaintext keys or credentials.
+   For the laptop, also import the private Stud.GK AppImage following
+   [the Stud.GK guide](docs/stud-gk.md). Host and package builds require this
+   exact file in the build machine's Nix store; evaluation alone does not.
 5. Run `make check`, build the chosen host, and apply it:
 
 ```sh
@@ -83,7 +86,7 @@ the bootloader, explicitly use `sudo nixos-rebuild switch --install-bootloader
 | `make fmt` | Format Nix files |
 | `make fmt-check` | Check formatting without changing files |
 | `make check` | Check formatting and fully evaluate both host derivations and flake outputs |
-| `make check-build` | Build the formatting, host evaluation, and ten local package checks |
+| `make check-build` | Build the formatting, host evaluation, and local package checks |
 | `make update` | Update `flake.lock` without activating the system |
 | `make build CONFIGURATION=<host>` | Build a host without activating it; creates `result` |
 | `make test CONFIGURATION=<host>` | Activate a host for the running system |
@@ -101,12 +104,17 @@ All local packages are exposed as flake outputs, for example:
 nix build .#gkpager
 nix build .#helium
 nix build .#codex-bin
+nix build .#stud-gk
 ```
 
 `codex-bin` uses the local binary derivation with dependencies from unstable
 nixpkgs; `opencode` and the Elm 0.19.2 compiler come directly from unstable. These
 choices are defined once in `overlays/default.nix`. Other local packages use
 stable nixpkgs.
+
+`stud-gk` uses a manually imported, hash-pinned AppImage from a private upstream.
+See [Stud.GK setup](docs/stud-gk.md) for the exact release, authenticated download,
+source build procedure, and troubleshooting a clean installation.
 
 ## Java development
 
@@ -152,4 +160,4 @@ the Java 24 SDK; the rest of the system stays on the main package inputs.
 
 Feature guides: [dotfiles](docs/dotfiles.md), [SOPS](docs/sops.md),
 [HS Flensburg Git](docs/hsflensburg.md), [eduroam](docs/eduroam.md),
-[SSH](docs/ssh.md), and [password store](docs/pass.md).
+[SSH](docs/ssh.md), [password store](docs/pass.md), and [Stud.GK](docs/stud-gk.md).
