@@ -20,6 +20,7 @@ in
   );
   opencode = unstable.opencode;
   jdk24 = java24Packages.temurin-bin-24;
+  omaenergy = final.callPackage ../packages/omaenergy.nix { };
   gkpager = final.callPackage ../packages/gkpager { };
   helium = final.callPackage ../packages/helium.nix { };
   helvetica-255 = final.callPackage ../packages/helvetica-255.nix { };
