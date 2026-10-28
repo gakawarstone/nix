@@ -8,6 +8,7 @@
     ./git.nix
     ./ssh.nix
     ./desktop.nix
+    ./activitywatch.nix
   ];
 
   home.stateVersion = "26.05";
