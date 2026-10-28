@@ -62,9 +62,6 @@ nix develop
 4. Stage newly added or moved project files before using Git-backed flake commands:
    `git add <paths>`. The flake only includes files known to Git. Stage encrypted
    secret files, never plaintext keys or credentials.
-   For the laptop, also import the private Stud.GK AppImage following
-   [the Stud.GK guide](docs/stud-gk.md). Host and package builds require this
-   exact file in the build machine's Nix store; evaluation alone does not.
 5. Run `make check`, build the chosen host, and apply it:
 
 ```sh
@@ -112,9 +109,9 @@ nixpkgs; `opencode` and the Elm 0.19.2 compiler come directly from unstable. The
 choices are defined once in `overlays/default.nix`. Other local packages use
 stable nixpkgs.
 
-`stud-gk` uses a manually imported, hash-pinned AppImage from a private upstream.
-See [Stud.GK setup](docs/stud-gk.md) for the exact release, authenticated download,
-source build procedure, and troubleshooting a clean installation.
+`stud-gk` automatically downloads a hash-pinned AppImage from its public upstream.
+See [Stud.GK setup](docs/stud-gk.md) for the exact release, build checks,
+and download troubleshooting.
 
 ## Java development
 
