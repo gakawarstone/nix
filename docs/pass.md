@@ -2,7 +2,9 @@
 
 The laptop imports `modules/services/pass.nix` through `home/gws/nixos.nix`.
 It enables the GnuPG agent with terminal pinentry and SSH support, and installs
-GnuPG, `pass`, and the GitHub CLI.
+GnuPG, `pass` with the `pass-otp` extension, and the GitHub CLI.
+
+Use `pass otp <entry>` to generate a one-time password for a stored OTP entry.
 
 Restore your private GPG key from its separate backup, then restart the agent:
 

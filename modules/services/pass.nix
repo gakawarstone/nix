@@ -9,7 +9,7 @@
 
   environment.systemPackages = with pkgs; [
     gnupg
-    pass
+    (pass.withExtensions (extensions: [ extensions.pass-otp ]))
     github-cli
   ];
 
