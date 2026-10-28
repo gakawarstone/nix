@@ -25,6 +25,9 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
+    extraSpecialArgs = {
+      nvimSource = inputs.nvim;
+    };
     backupFileExtension = "hm-bak";
     sharedModules = [ inputs.nvim.homeManagerModules.default ];
     users.gws = import ./.;

@@ -35,6 +35,7 @@
           helvetica-255
           herdr
           klartext
+          kotlin-lsp
           t3code
           tgsend
           ;

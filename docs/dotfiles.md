@@ -4,6 +4,18 @@ The laptop deliberately uses an editable checkout at `~/dotfiles`. Nix pins the
 Neovim configuration through the `nvim` flake input, but does not pin the separate
 dotfiles checkout. A Nix rebuild does not fetch or update that checkout.
 
+`home/gws/editor.nix` patches the pinned Neovim source to select the official
+JetBrains Kotlin server installed by Nix. This makes a normal `make switch`
+include the Kotlin migration without overriding the input to a local checkout.
+Remove `home/gws/nvim-kotlin.patch` and the source override when the `nvim` input
+is updated to a revision that includes the migration. Completion remains manual:
+press `Ctrl-Space` in insert mode to show suggestions.
+
+The Kotlin server runs on Java 25, while its Gradle importer defaults to a
+Nix-provided Java 21 so it works with Gradle 8 projects and avoids incompatible
+downloaded JDKs. An explicit `com.jetbrains.ls.imports.gradle.java.home` in
+`IJ_JAVA_OPTIONS` can override the default for other projects.
+
 For user `gws`, clone it before starting the desktop:
 
 ```sh
