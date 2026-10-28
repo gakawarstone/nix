@@ -104,8 +104,9 @@ nix build .#codex-bin
 ```
 
 `codex-bin` uses the local binary derivation with dependencies from unstable
-nixpkgs; `opencode` comes directly from unstable. These choices are defined once
-in `overlays/default.nix`. Other local packages use stable nixpkgs.
+nixpkgs; `opencode` and the Elm 0.19.2 compiler come directly from unstable. These
+choices are defined once in `overlays/default.nix`. Other local packages use
+stable nixpkgs.
 
 ## Java development
 

@@ -1,6 +1,6 @@
 # Exposes the local derivations in ../packages as pkgs.<name>.
 { inputs }:
-final: _:
+final: prev:
 let
   unstable = import inputs.nixpkgs-unstable {
     system = final.stdenv.hostPlatform.system;
@@ -12,6 +12,12 @@ in
 {
   chatgpt-linux = final.callPackage ../packages/chatgpt-linux.nix { };
   codex-bin = unstable.callPackage ../packages/codex-bin.nix { };
+  elmPackages = prev.elmPackages.overrideScope (
+    _: _: {
+      elm = unstable.elmPackages.elm;
+      elm-test = unstable.elmPackages.elm-test;
+    }
+  );
   opencode = unstable.opencode;
   jdk24 = java24Packages.temurin-bin-24;
   gkpager = final.callPackage ../packages/gkpager { };

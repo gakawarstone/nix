@@ -20,6 +20,7 @@
     elmPackages.elm
     elmPackages.elm-format
     elmPackages.elm-language-server
+    elmPackages.elm-test
     jetbrains.idea
     opencode
     codex-bin
