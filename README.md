@@ -12,7 +12,7 @@ Home Manager, encrypted secrets, and local packages.
 
 The VM hardware configuration is a placeholder for evaluation. Replace it with
 the target's generated configuration before deployment. `make build`, `make test`,
-and `make switch` reject the placeholder.
+`make switch`, and `make switch-install-bootloader` reject the placeholder.
 
 ## Layout
 
@@ -71,10 +71,11 @@ make switch CONFIGURATION=gklaptop
 ```
 
 `test` activates the configuration for the running system. `switch` also makes
-it the boot default. Neither command sets an account password; provision that
-separately on a fresh installation. If the initial installation requires writing
-the bootloader, explicitly use `sudo nixos-rebuild switch --install-bootloader
---flake .#gklaptop`.
+it the boot default without forcing a bootloader reinstallation. If the initial
+installation or bootloader repair requires explicitly installing the bootloader,
+use `make switch-install-bootloader CONFIGURATION=gklaptop`. This also activates
+the configuration and makes it the boot default. These commands do not set an
+account password; provision that separately on a fresh installation.
 
 ## Maintenance
 
@@ -88,6 +89,7 @@ the bootloader, explicitly use `sudo nixos-rebuild switch --install-bootloader
 | `make build CONFIGURATION=<host>` | Build a host without activating it; creates `result` |
 | `make test CONFIGURATION=<host>` | Activate a host for the running system |
 | `make switch CONFIGURATION=<host>` | Activate a host and update its boot default |
+| `make switch-install-bootloader CONFIGURATION=<host>` | Activate a host, explicitly install the bootloader, and update its boot default |
 | `make clean` | Delete old generations and optimize the Nix store |
 
 The default host is `gklaptop`. After `make update`, review the lockfile change,
@@ -110,8 +112,6 @@ choices are defined once in `overlays/default.nix`. Other local packages use
 stable nixpkgs.
 
 `stud-gk` automatically downloads a hash-pinned AppImage from its public upstream.
-See [Stud.GK setup](docs/stud-gk.md) for the exact release, build checks,
-and download troubleshooting.
 
 ## Java development
 
@@ -157,4 +157,5 @@ the Java 24 SDK; the rest of the system stays on the main package inputs.
 
 Feature guides: [dotfiles](docs/dotfiles.md), [SOPS](docs/sops.md),
 [HS Flensburg Git](docs/hsflensburg.md), [eduroam](docs/eduroam.md),
-[SSH](docs/ssh.md), [password store](docs/pass.md), and [Stud.GK](docs/stud-gk.md).
+[SSH](docs/ssh.md), [password store](docs/pass.md), and
+[Energy Meter](docs/energy-meter.md).

@@ -4,13 +4,13 @@
   stdenvNoCC,
 }:
 
-stdenvNoCC.mkDerivation {
+stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "herdr";
-  version = "0.9.0";
+  version = "0.9.5";
 
   src = fetchurl {
-    url = "https://github.com/herdrdev/herdr/releases/download/v0.9.0/herdr-linux-x86_64";
-    hash = "sha256-T6GgEVjdgEPaktMbJweAsNzBBgMDjZthysTYGrY/tx8=";
+    url = "https://github.com/herdrdev/herdr/releases/download/v${finalAttrs.version}/herdr-linux-x86_64";
+    hash = "sha256-FNnovItKngEY13wyJm921GHwm0A0LrI3UpYL2J9Zkp0=";
   };
 
   dontUnpack = true;
@@ -29,4 +29,4 @@ stdenvNoCC.mkDerivation {
     platforms = [ "x86_64-linux" ];
     sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
   };
-}
+})

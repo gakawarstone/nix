@@ -1,4 +1,4 @@
-.PHONY: check check-build fmt fmt-check build test switch update clean verify-host
+.PHONY: check check-build fmt fmt-check build test switch switch-install-bootloader update clean verify-host
 
 CONFIGURATION ?= gklaptop
 HARDWARE_CONFIG := hosts/$(CONFIGURATION)/hardware-configuration.nix
@@ -40,6 +40,9 @@ clean:
 
 switch: verify-host
 	sudo nixos-rebuild switch --flake ".#$(CONFIGURATION)" $(BUILD_OPTIONS)
+
+switch-install-bootloader: verify-host
+	sudo nixos-rebuild switch --install-bootloader --flake ".#$(CONFIGURATION)" $(BUILD_OPTIONS)
 
 update:
 	nix flake update
