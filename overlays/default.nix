@@ -10,6 +10,7 @@ let
   };
 in
 {
+  stud-gk = final.callPackage ../packages/stud-gk.nix { };
   chatgpt-linux = final.callPackage ../packages/chatgpt-linux.nix { };
   codex-bin = unstable.callPackage ../packages/codex-bin.nix { };
   elmPackages = prev.elmPackages.overrideScope (

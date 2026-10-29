@@ -3,6 +3,7 @@
   home.packages =
     with pkgs;
     [
+      stud-gk
       fastfetch
       helium
       telegram-desktop

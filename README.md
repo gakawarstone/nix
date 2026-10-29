@@ -103,12 +103,15 @@ All local packages are exposed as flake outputs, for example:
 nix build .#gkpager
 nix build .#helium
 nix build .#codex-bin
+nix build .#stud-gk
 ```
 
 `codex-bin` uses the local binary derivation with dependencies from unstable
 nixpkgs; `opencode` and the Elm 0.19.2 compiler come directly from unstable. These
 choices are defined once in `overlays/default.nix`. Other local packages use
 stable nixpkgs.
+
+`stud-gk` automatically downloads a hash-pinned AppImage from its public upstream.
 
 ## Java development
 
